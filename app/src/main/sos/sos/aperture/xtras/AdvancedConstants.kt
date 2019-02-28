@@ -1,4 +1,4 @@
-package com.aperture.xtras
+package sos.aperture.xtras
 
 object AdvancedConstants {
 

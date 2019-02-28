@@ -1,6 +1,6 @@
 @file:Suppress("ConstantConditionIf")
 
-package com.aperture.xtras
+package sos.aperture.xtras
 
 import android.app.Activity
 import android.content.Context
@@ -13,14 +13,14 @@ import android.widget.Toast
 import com.github.javiersantos.piracychecker.*
 import com.github.javiersantos.piracychecker.enums.*
 import com.github.javiersantos.piracychecker.utils.apkSignature
-import com.aperture.xtras.AdvancedConstants.ORGANIZATION_THEME_SYSTEMS
-import com.aperture.xtras.AdvancedConstants.OTHER_THEME_SYSTEMS
-import com.aperture.xtras.AdvancedConstants.SHOW_DIALOG_REPEATEDLY
-import com.aperture.xtras.AdvancedConstants.SHOW_LAUNCH_DIALOG
-import com.aperture.xtras.ThemeFunctions.checkApprovedSignature
-import com.aperture.xtras.ThemeFunctions.getSelfSignature
-import com.aperture.xtras.ThemeFunctions.getSelfVerifiedPirateTools
-import com.aperture.xtras.ThemeFunctions.isCallingPackageAllowed
+import sos.aperture.xtras.AdvancedConstants.ORGANIZATION_THEME_SYSTEMS
+import sos.aperture.xtras.AdvancedConstants.OTHER_THEME_SYSTEMS
+import sos.aperture.xtras.AdvancedConstants.SHOW_DIALOG_REPEATEDLY
+import sos.aperture.xtras.AdvancedConstants.SHOW_LAUNCH_DIALOG
+import sos.aperture.xtras.ThemeFunctions.checkApprovedSignature
+import sos.aperture.xtras.ThemeFunctions.getSelfSignature
+import sos.aperture.xtras.ThemeFunctions.getSelfVerifiedPirateTools
+import sos.aperture.xtras.ThemeFunctions.isCallingPackageAllowed
 
 /**
  * NOTE TO THEMERS

@@ -5,6 +5,12 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
+tasks.whenTaskAdded { task ->
+    if (task.name.startsWith("lint")) {
+        task.enabled = false
+    }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: 'ThemerConstants.gradle'
@@ -23,16 +29,21 @@ android {
     compileSdkVersion 28
 
 
+    android.applicationVariants.all { final variant ->
+        variant.outputs.all {
+            outputFileName = "substweaks_${variant.versionCode}.apk"
+        }
+    }
     defaultConfig {
         // If you're planning to change up the package name, ensure you have read the readme
         // thoroughly!
-        applicationId "com.aperture.xtras"
+        applicationId "sos.aperture.substweaks"
         // We are only supporting Nougat and above, all new changes will incorporate Nougat changes
         // to the substratum repo rather than anything lower. Keep targetSdkVersion the same.
         minSdkVersion 24
         // Both versions must be changed to increment on Play Store/user's devices
-        versionCode 2
-        versionName "2.0"
+        versionCode 36
+        versionName "3.6"
 
         // Themers: DO NOT MODIFY
         buildConfigField "boolean", "SUPPORTS_THIRD_PARTY_SYSTEMS", "" + SUPPORTS_THIRD_PARTY_SYSTEMS
@@ -43,6 +54,17 @@ android {
         buildConfigField "byte[]", "IV_KEY", String.valueOf("\"" + IV_KEY + "\"").replace("\"", "").replace("[", "{").replace("]", "}")
         resValue "string", "encryption_status", (shouldEncrypt() ? "onCompileVerify" : "false")
     }
+
+    signingConfigs {
+        release {
+            storeFile file("../extras/keystore/keystore.jks")
+            storePassword System.getenv("KEYSTORE_PASSWD")
+            keyAlias "stalker"
+            keyPassword System.getenv("KEY_PASSWD")
+         }
+    }
+
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -55,6 +77,7 @@ android {
         }
         release {
             minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             // Themers: DO NOT MODIFY
@@ -73,6 +96,17 @@ dependencies {
     implementation 'com.github.javiersantos:PiracyChecker:1.2.5'
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     implementation("androidx.appcompat:appcompat:1.0.2")
+}
+
+task validateAssets(type: Exec) {
+    final def stdout = new ByteArrayOutputStream()
+    commandLine './test_assets.sh'
+    standardOutput = stdout
+    ignoreExitValue true
+    println(stdout.toString())
+    if (stdout.toString().trim() != "") {
+        throw new GradleException("Assets are fucked!");
+    }
 }
 
 // Themers: DO NOT MODIFY ANYTHING BELOW
@@ -138,6 +172,7 @@ task encryptAssets {
 }
 
 project.afterEvaluate {
+    preBuild.dependsOn validateAssets
     preBuild.dependsOn encryptAssets
 }
 
@@ -168,4 +203,9 @@ gradle.buildFinished {
 boolean shouldEncrypt() {
     ArrayList<String> tasks = project.gradle.startParameter.taskNames
     return SHOULD_ENCRYPT_ASSETS && Arrays.toString(tasks).toLowerCase().contains("release")
+}
+
+boolean shouldValidate() {
+    ArrayList<String> tasks = project.gradle.startParameter.taskNames
+    return SHOULD_VALIDATE_ASSETS // && Arrays.toString(tasks).toLowerCase().contains("release")
 }

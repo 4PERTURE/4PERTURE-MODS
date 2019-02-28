@@ -1,13 +1,13 @@
-package com.aperture.xtras
+package sos.aperture.xtras
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.pm.Signature
 import android.os.RemoteException
-import com.aperture.xtras.AdvancedConstants.BLACKLISTED_APPLICATIONS
-import com.aperture.xtras.AdvancedConstants.ORGANIZATION_THEME_SYSTEMS
-import com.aperture.xtras.AdvancedConstants.OTHER_THEME_SYSTEMS
+import sos.aperture.xtras.AdvancedConstants.BLACKLISTED_APPLICATIONS
+import sos.aperture.xtras.AdvancedConstants.ORGANIZATION_THEME_SYSTEMS
+import sos.aperture.xtras.AdvancedConstants.OTHER_THEME_SYSTEMS
 
 @Suppress("ConstantConditionIf")
 object ThemeFunctions {
